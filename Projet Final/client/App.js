@@ -32,7 +32,7 @@ TEMPSREFRESH=650; //temporaire, temps en ms pour autorefresh
 function setup() { // fonction éxecutée une fois au début
   createCanvas(600,400); //création d'une zone de 600 par 400 pixels
   background(51); // fond gris
-  let strconnectto='http://localhost:';
+  let strconnectto='http://157.159.195.79:';
   room=room+5000;
   console.log(room);
   console.log(room);

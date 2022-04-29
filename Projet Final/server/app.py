@@ -12,7 +12,7 @@ import sys,random
 #setup de l'application flask et de socket
 app = Flask(__name__)
 socket = SocketIO(app, cors_allowed_origins="*")
-app.debug = True
+app.debug = False
 PORT = int(sys.argv[1])+5000
 
 themes = ['maison','arbre','ordi','japon','coree','amphitheatre','poulet']
