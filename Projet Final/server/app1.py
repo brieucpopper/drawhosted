@@ -11,8 +11,7 @@ import time
 #setup de l'application flask et de socket
 app = Flask(__name__)
 socket = SocketIO(app, cors_allowed_origins="*")
-app.debug = True
-app.host = '0.0.0.0'
+app.debug = False
 
 
 #avec
@@ -315,4 +314,4 @@ def commencer(): #passage de la phase de queue à la phase de jeu
 #code à avoir en dessous de @socket.on()
 #permet de lancer le serveur
 if __name__ == '__main__':
-    socket.run(app,port=5001)
+    socket.run(app,host='0.0.0.0',port=5001)

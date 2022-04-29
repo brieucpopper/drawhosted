@@ -31,8 +31,9 @@ TEMPSREFRESH=650; //temporaire, temps en ms pour autorefresh
 function setup() { // fonction éxecutée une fois au début
   createCanvas(600,400); //création d'une zone de 600 par 400 pixels
   background(51); // fond gris
-  let strconnectto='http://localhost:';
+  let strconnectto='http://157.159.195.79:';
   room=room+5000;
+  console.log(room);
   console.log(room);
   socket=io.connect(strconnectto+room); // initialisation du socket client
 
@@ -82,8 +83,9 @@ function draw() { //fonction éxécutée en boucle lors du programme
       //ni en votes ni en partie
 
       fill(255);
-      text("les scores de la derniere partie jouee sont" + scoresDernierePartie,100,100);
-      text("des joueurs respectivement" + nomsDernierePartie,100,115);
+      text("les scores de la derniere partie jouee sont " + scoresDernierePartie,100,100);
+      text("des joueurs respectivement " + nomsDernierePartie,100,115);
+      text("Si la partie ne se lance pas alors que vous etes assez, attendre, le serveur est surement en phase de votes " + nomsDernierePartie,100,130);
     }
 
 
