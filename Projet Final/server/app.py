@@ -7,14 +7,15 @@
 from flask import Flask
 from flask_socketio import SocketIO, send
 import time
+import sys,random
 
 #setup de l'application flask et de socket
 app = Flask(__name__)
 socket = SocketIO(app, cors_allowed_origins="*")
 app.debug = True
-app.host = '0.0.0.0'
+PORT = int(sys.argv[1])+5000
 
-
+themes = ['maison','arbre','ordi','japon','coree','amphitheatre','poulet']
 #avec
 
 #@socket.on("nomEvent")
@@ -39,8 +40,8 @@ app.host = '0.0.0.0'
 
 
 NBJOUEURS = 4 #nombre de joueurs par partie
-TEMPSPARMANCHE = 3
-TEMPSPARVOTE = 3
+TEMPSPARMANCHE = 15
+TEMPSPARVOTE = 7
 timer=0 # donne le temps depuis le début de la phase actuelle
 tempsDebutManche = 0 # le temps auquel la manche a débuté
 estEnPartie=False #devient true lorsque en partie
@@ -125,6 +126,12 @@ def catchconnect(id):
     print()
     catchrefresh(id)
 
+@socket.on("iwantinfo") #envoyer au site web central les infos sur la partie intéressantes
+def catchiwantinfo(idd):
+    socket.emit("infosparties",[noms,PORT],to=idd)
+    print("jaienvoyéinfo")
+
+
 def rafraichirDessinTous(): #rafraichit les dessin de  chacun
     for id in joueursEnPartie:
         catchajout(id,-100,-100);
@@ -208,6 +215,7 @@ def catchrefresh(id): # on verifie qu'on a pas changé de phase, puisque cette f
             archiveDessins[5]=dessin2.copy()
 
         tempsDebutManche=time.time()
+        envoyerThemeEtChangerTheme()
         if(phaseActuelle<2):
             phaseActuelle+=1
             dessin1=[]
@@ -287,7 +295,11 @@ def quelJoueur(id):
     return -1
 
 
-
+def envoyerThemeEtChangerTheme():
+    global themes
+    theme=random.choice(themes)
+    for id in joueursEnPartie:
+        socket.emit("theme",theme,to=id)
 
 
 def commencer(): #passage de la phase de queue à la phase de jeu
@@ -312,7 +324,8 @@ def commencer(): #passage de la phase de queue à la phase de jeu
 
 
 
+
 #code à avoir en dessous de @socket.on()
 #permet de lancer le serveur
 if __name__ == '__main__':
-    socket.run(app,port=5002)
+    socket.run(app,host='0.0.0.0',port=PORT)

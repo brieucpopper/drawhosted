@@ -17,6 +17,7 @@ let pDessinActuelVote;
 let pStatutVotes;
 let scoresDernierePartie="";
 let nomsDernierePartie="";
+let theme="";
 
 let RED=[255,0,0];
 let GREEN=[0,255,0];
@@ -31,7 +32,7 @@ TEMPSREFRESH=650; //temporaire, temps en ms pour autorefresh
 function setup() { // fonction éxecutée une fois au début
   createCanvas(600,400); //création d'une zone de 600 par 400 pixels
   background(51); // fond gris
-  let strconnectto='http://157.159.195.79:';
+  let strconnectto='http://localhost:';
   room=room+5000;
   console.log(room);
   console.log(room);
@@ -58,6 +59,7 @@ function setup() { // fonction éxecutée une fois au début
   socket.on('nomDejaPris',() => {console.log("nomdejapris")});
   socket.on('nomOk',() => {console.log("nomOk")});
   socket.on("rejoint",() => {console.log("rejoint")});
+  socket.on("theme",(x) => {theme=x});
 
 
 
@@ -79,6 +81,7 @@ function draw() { //fonction éxécutée en boucle lors du programme
   background(51);
   if(!servEstEnPartie && !estEnVotes)
     {
+
 
       //ni en votes ni en partie
 
@@ -112,6 +115,7 @@ function draw() { //fonction éxécutée en boucle lors du programme
   }
 
   if(servEstEnPartie){
+    text("LE THEME ACTUEL: " + theme,100,100);
     pTimer.html("temps ecoule sur la manche : "+timer);
     line(300,0,300,400);
     if (dessin != []){
