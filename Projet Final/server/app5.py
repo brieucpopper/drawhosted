@@ -315,4 +315,4 @@ def commencer(): #passage de la phase de queue à la phase de jeu
 #code à avoir en dessous de @socket.on()
 #permet de lancer le serveur
 if __name__ == '__main__':
-    socket.run(app,port=5003)
+    socket.run(app,port=5005)
