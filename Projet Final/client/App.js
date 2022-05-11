@@ -35,6 +35,7 @@ function setup() { // fonction éxecutée une fois au début
   createCanvas(largeur,hauteur); //création d'une zone de 600 par 400 pixels
   background(51); // fond gris
   let strconnectto='http://157.159.195.79:';
+  //let strconnectto='http://localhost:';
   room=room+5000;
   console.log(room);
   console.log(room);
