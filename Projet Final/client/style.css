@@ -1,0 +1,88 @@
+#conteneur{
+    height: 700px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/*-------------gauche----------------*/
+#gauche{
+    width: 25%;
+}
+
+#nom{
+    margin-top: 40%;
+    text-align: center;
+}
+
+#boite{
+    margin-top: 15%;
+    height: 50%;
+    text-align: center;
+    border: solid;
+    background: rgba(255,255,255,0.5);
+    border-radius: 1em;
+}
+
+
+#connexion{
+    margin-top: 20%;
+    border: solid;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 1em;
+    background: rgba(36, 3, 3, 0.65);
+    color: white;
+    border-color: rgba(36, 3, 3, 0.65);
+}
+
+#user{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+}
+#pass{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+}
+
+#connect{
+    margin-top: 10%
+}
+
+#bouton{
+    margin-top: 10%;
+    width: 50%;
+}
+
+/*-------------droite----------------*/
+#droite{
+    width: 65%;
+    border: solid;
+    display: grid;
+    grid-template-columns: repeat(2, 0.5fr);
+    background: rgba(255,255,255,0.5);
+    border-radius: 1em;
+}
+
+.ro{
+    text-align: center;
+    border: solid;
+    margin: auto;
+    width: 50%;
+    border-radius: 1em;
+
+}
+
+#room1,#room7{
+    background: rgba(167, 13, 13, 0.5);
+    border-color: rgba(167, 13, 13, 0.5);
+}
+
+#room2,#room3,#room4,#room5,#room6,#room8,#room9,#room10{
+    background: rgba(13, 167, 62, 0.5);
+    border-color: rgba(13, 167, 62, 0.5);
+}

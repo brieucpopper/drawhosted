@@ -7,5 +7,9 @@ le placer dans /var/www/html avec tous les autres fichiers clients  (pour hoster
 
 mettre le app.debug = False (pour hoster, pour debugger, true)
 
-pour lancer les serveurs de chaue partie nohup python3 app.py i
+pour lancer les serveurs de chaue partie nohup python3 app.py i &
 avec i entre 1 et 10
+
+
+
+/var/www/html

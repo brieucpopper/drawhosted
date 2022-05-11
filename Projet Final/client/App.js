@@ -18,6 +18,8 @@ let pStatutVotes;
 let scoresDernierePartie="";
 let nomsDernierePartie="";
 let theme="";
+let largeur = 900
+let hauteur=500
 
 let RED=[255,0,0];
 let GREEN=[0,255,0];
@@ -30,7 +32,7 @@ tempsDernierRefresh=0;
 TEMPSREFRESH=650; //temporaire, temps en ms pour autorefresh
 
 function setup() { // fonction éxecutée une fois au début
-  createCanvas(600,400); //création d'une zone de 600 par 400 pixels
+  createCanvas(largeur,hauteur); //création d'une zone de 600 par 400 pixels
   background(51); // fond gris
   let strconnectto='http://157.159.195.79:';
   room=room+5000;
@@ -97,7 +99,7 @@ function draw() { //fonction éxécutée en boucle lors du programme
 
   let offset=0
   for (m of messages){
-    text(m,300,10+offset);
+    text(m,largeur/2,10+offset);
     offset+=10;
   }
 
@@ -117,7 +119,7 @@ function draw() { //fonction éxécutée en boucle lors du programme
   if(servEstEnPartie){
     text("LE THEME ACTUEL: " + theme,100,100);
     pTimer.html("temps ecoule sur la manche : "+timer);
-    line(300,0,300,400);
+    line(largeur/2,0,largeur/2,hauteur);
     if (dessin != []){
       for (coord of dessin){
         fill(200,100,20);
@@ -155,7 +157,9 @@ pTimer.html("pas de timer, la partie n'a pas commencee");
     if (dessin != []){
       for (coord of dessin){
         fill(200,100,20);
+        noStroke();
         ellipse(coord[0],coord[1],10,10);
+        stroke(0,0,0);
 
       }
     }

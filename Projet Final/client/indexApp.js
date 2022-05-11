@@ -1,5 +1,5 @@
 let tempsDernierRefresh=0;
-let TEMPSREFRESH = 3000;
+let TEMPSREFRESH = 700;
 let sockets=[];
 let ROOMS=10;
 let joueursenpdanschaqueroom=[];

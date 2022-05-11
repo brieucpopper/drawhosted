@@ -14,6 +14,7 @@ app = Flask(__name__)
 socket = SocketIO(app, cors_allowed_origins="*")
 app.debug = False
 PORT = int(sys.argv[1])+5000
+largeur = 900
 
 themes = ['maison','arbre','ordi','japon','coree','amphitheatre','poulet']
 #avec
@@ -40,8 +41,8 @@ themes = ['maison','arbre','ordi','japon','coree','amphitheatre','poulet']
 
 
 NBJOUEURS = 4 #nombre de joueurs par partie
-TEMPSPARMANCHE = 15
-TEMPSPARVOTE = 7
+TEMPSPARMANCHE = 3
+TEMPSPARVOTE = 3
 timer=0 # donne le temps depuis le début de la phase actuelle
 tempsDebutManche = 0 # le temps auquel la manche a débuté
 estEnPartie=False #devient true lorsque en partie
@@ -129,7 +130,8 @@ def catchconnect(id):
 @socket.on("iwantinfo") #envoyer au site web central les infos sur la partie intéressantes
 def catchiwantinfo(idd):
     socket.emit("infosparties",[noms,PORT],to=idd)
-    print("jaienvoyéinfo")
+
+
 
 
 def rafraichirDessinTous(): #rafraichit les dessin de  chacun
@@ -149,7 +151,7 @@ def catchajout(id,x,y):
 
         if quelJoueur(id) in phasesDessin[phaseActuelle][0]: #le joueur est dans l'équipe 1
 
-            if (quelJoueur(id)==phasesDessin[phaseActuelle][0][0] and x<300) or (quelJoueur(id)==phasesDessin[phaseActuelle][0][1] and x>300): #verif du coté du point posé
+            if (quelJoueur(id)==phasesDessin[phaseActuelle][0][0] and x<largeur/2) or (quelJoueur(id)==phasesDessin[phaseActuelle][0][1] and x>largeur/2): #verif du coté du point posé
 
                 dessin1.append([x,y]);
                 socket.emit("updateDessin",dessin1,to=joueursEnPartie[phasesDessin[phaseActuelle][0][0]-1])
@@ -159,7 +161,7 @@ def catchajout(id,x,y):
 
 
         if quelJoueur(id) in phasesDessin[phaseActuelle][1]:
-            if ((quelJoueur(id)==phasesDessin[phaseActuelle][1][0] and x<300) or (quelJoueur(id)==phasesDessin[phaseActuelle][1][1] and x>300)): #verif du coté du point
+            if ((quelJoueur(id)==phasesDessin[phaseActuelle][1][0] and x<largeur/2) or (quelJoueur(id)==phasesDessin[phaseActuelle][1][1] and x>largeur/2)): #verif du coté du point
                 dessin2.append([x,y])
                 socket.emit("updateDessin",dessin2,to=joueursEnPartie[phasesDessin[phaseActuelle][1][0]-1])
 
@@ -199,7 +201,6 @@ def catchrefresh(id): # on verifie qu'on a pas changé de phase, puisque cette f
     global noms,joueursEnQueue,joueursEnPartie,phasesDessin,phaseActuelle,dessin1,dessin2
     global archiveDessins,scores,totaux,dessinActuelVote,idDejaVoté
     timer=time.time()-tempsDebutManche
-
     if(timer>TEMPSPARMANCHE) and estEnPartie:
 
         #on doit alors changer de phase
@@ -229,16 +230,20 @@ def catchrefresh(id): # on verifie qu'on a pas changé de phase, puisque cette f
             dessin1=archiveDessins[dessinActuelVote].copy()
             dessin2=archiveDessins[dessinActuelVote].copy()
             rafraichirDessinTous()
+
     if(time.time()>tempsDebutManche+TEMPSPARVOTE) and estEnVotes:
 
-        dessinActuelVote+=1
-
-
-        tempsDebutManche=time.time()
-        idDejaVoté=[]
+        if dessinActuelVote<6:
+            dessinActuelVote+=1
+        if dessinActuelVote<6:
+            dessin1=archiveDessins[dessinActuelVote].copy()
+            dessin2=archiveDessins[dessinActuelVote].copy()
+            rafraichirDessinTous()
+            tempsDebutManche=time.time()
+            idDejaVoté=[]
 
         if(dessinActuelVote>=6):
-            dessinActuelVote=5
+            dessinActuelVote=0
             print("FINIIIIIIIIIIIi")
             print("Les totaux sont")
             print(totaux)
@@ -250,8 +255,6 @@ def catchrefresh(id): # on verifie qu'on a pas changé de phase, puisque cette f
             nomsDernierePartie=noms
             scoresDernierePartie=scores
             estEnVotes=False
-            dessin1=archiveDessins[dessinActuelVote].copy()
-            dessin2=archiveDessins[dessinActuelVote].copy()
             rafraichirDessinTous()
 
 

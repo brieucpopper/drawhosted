@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="font_body.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet"><meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet">
+    <title>DRAW2IO_david</title>
+</head>
+<script src=socket.io.min.js></script>
+<script src=p5.min.js></script>
+<script src=indexApp.js></script>
+
+<body>
+    <div id="conteneur">
+        <div id="gauche">
+            <div id="nom"> Draw2IO  </br> Le jeu délirant </div>
+            <div id="boite">
+                <div id="connexion"> Compte joueur </div>
+                <form action="bdd" method="post">
+                    <div id="user">
+                        <label>Username: </label>
+                        <input type="text" id="username" name="use_name">
+                    </div>
+                    <div id="pass">
+                        <label> Password: </label>
+                        <input type="text" id="password" name="pass_word">
+                    </div>
+                </form>
+                <button id="bouton"> Connexion </button>
+            </div>
+        </div>
+
+        <div id="droite">
+            <div id="room1" class="ro"> <a href="room_david.html"> Room1 (4/4) </a> </div>
+            <div id="room2" class="ro"> Room2 (3/4) </div>
+            <div id="room3" class="ro" > Room3 (1/4) </div>
+            <div id="room4" class="ro"> Room4 (0/4) </div>
+            <div id="room5" class="ro"> Room5 (3/4) </div>
+            <div id="room6" class="ro"> Room6 (2/4) </div>
+            <div id="room7" class="ro"> Room7 (4/4) </div>
+            <div id="room8" class="ro"> Room8 (1/4) </div>
+            <div id="room9" class="ro"> Room9 (0/4) </div>
+            <div id="room10" class="ro"> Room10 (0/4) </div>
+        </div>
+    </div>
+</body>
