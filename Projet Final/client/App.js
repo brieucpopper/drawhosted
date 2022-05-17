@@ -2,6 +2,7 @@
 let servEstEnPartie = false;
 let jeSuisEnPartie = false; //TODO
 let estEnVotes = false;
+let joueursPresents = [];
 let noms = [];
 let phaseActuelle = 0;
 let idDejaVote = [];
@@ -20,6 +21,7 @@ let nomsDernierePartie="";
 let theme="";
 let largeur = 900
 let hauteur=500
+let taillePoint=8;
 
 let RED=[255,0,0];
 let GREEN=[0,255,0];
@@ -32,8 +34,9 @@ tempsDernierRefresh=0;
 TEMPSREFRESH=650; //temporaire, temps en ms pour autorefresh
 
 function setup() { // fonction éxecutée une fois au début
-  createCanvas(largeur,hauteur); //création d'une zone de 600 par 400 pixels
-  background(51); // fond gris
+  let canvas=createCanvas(largeur,hauteur); //création d'une zone de 600 par 400 pixels
+  canvas.parent('sketch-holder');
+  background(245); // fond gris
   let strconnectto='http://157.159.195.79:';
   //let strconnectto='http://localhost:';
   room=room+5000;
@@ -44,6 +47,7 @@ function setup() { // fonction éxecutée une fois au début
   pStatutPartie=createP('the server is in a game : '+servEstEnPartie);
   pTimer=createP("temps écoulé sur la manche : "+timer);
   pStatutVotes=createP('the server is in votes : '+estEnVotes);
+  pStatutGensPresents=createP('Sont présents sur le serveur les joueurs :');
   pDessinActuelVote=createP();
   //pStatutPartie.show();
 
@@ -51,9 +55,9 @@ function setup() { // fonction éxecutée une fois au début
   bouttonRech.position(500,500);
   bouttonRech.mousePressed(recherche); // appel de fonction lorsque le bouton est cliqué
 
-  bouttonRef = createButton("refresh");
-  bouttonRef.position(100,500);
-  bouttonRef.mousePressed(refreshqueue);
+  //bouttonRef = createButton("refresh");
+  //bouttonRef.position(100,500);
+  //bouttonRef.mousePressed(refreshqueue);
 
 
   socket.on('maj',miseAJour); // gestion de socket recu en appelant une fonction
@@ -63,6 +67,8 @@ function setup() { // fonction éxecutée une fois au début
   socket.on('nomOk',() => {console.log("nomOk")});
   socket.on("rejoint",() => {console.log("rejoint")});
   socket.on("theme",(x) => {theme=x});
+  socket.on("nouveauPoint",majDessinPoint);
+  socket.on("effacer",() => {dessin=[]});
 
 
 
@@ -79,23 +85,24 @@ function setup() { // fonction éxecutée une fois au début
 
 
 function draw() { //fonction éxécutée en boucle lors du programme
-  pStatutVotes.html('the server is in votes : '+estEnVotes);
-  pStatutPartie.html('the server is in a game : '+servEstEnPartie);
-  background(51);
+  pStatutVotes.html('Le serveur est en votes : '+estEnVotes);
+  pStatutPartie.html('Le serveur est en partie : '+servEstEnPartie);
+  pStatutGensPresents.html('Sont présents sur le serveur les joueurs : :'+joueursPresents);
+  background(245);
   if(!servEstEnPartie && !estEnVotes)
     {
 
 
       //ni en votes ni en partie
 
-      fill(255);
+      fill(0);
       text("les scores de la derniere partie jouee sont " + scoresDernierePartie,100,100);
       text("des joueurs respectivement " + nomsDernierePartie,100,115);
-      text("Si la partie ne se lance pas alors que vous etes assez, attendre, le serveur est surement en phase de votes " + nomsDernierePartie,100,130);
+      text("Si la partie ne se lance pas alors que vous etes assez, attendre la fin de la partie en cours, les gens présents sont : " + nomsDernierePartie,100,130);
     }
 
 
-  fill(255);
+  fill(0);
 
 
   let offset=0
@@ -123,9 +130,9 @@ function draw() { //fonction éxécutée en boucle lors du programme
     line(largeur/2,0,largeur/2,hauteur);
     if (dessin != []){
       for (coord of dessin){
-        fill(200,100,20);
+        fill(0,0,0);
         noStroke();
-        ellipse(coord[0],coord[1],10,10);
+        ellipse(coord[0],coord[1],taillePoint,taillePoint);
         stroke(0,0,0);
 
       }
@@ -143,23 +150,23 @@ pTimer.html("pas de timer, la partie n'a pas commencee");
   if(estEnVotes){
     pTimer.html("temps ecoule sur le vote : "+timer);
     fill(RED);
-    rect(0,350,200,400);
-    fill(255);
-    text("nul",100,375);
+    rect(0,450,200,500);
+    fill(0);
+    text("nul",100,475);
     fill(ORANGE);
-    rect(200,350,400,400);
-    fill(255);
-    text("bof",300,375);
+    rect(200,450,400,500);
+    fill(0);
+    text("bof",300,475);
     fill(GREEN);
-    rect(400,350,600,400);
-    fill(255);
-    text("kewl",500,375);
+    rect(400,450,600,500);
+    fill(0);
+    text("Cool !",500,475);
 
     if (dessin != []){
       for (coord of dessin){
-        fill(200,100,20);
+        fill(0);
         noStroke();
-        ellipse(coord[0],coord[1],10,10);
+        ellipse(coord[0],coord[1],taillePoint,taillePoint);
         stroke(0,0,0);
 
       }
@@ -183,6 +190,9 @@ function miseAJour(arr){
   timer = arr[7];
   nomsDernierePartie=arr[8];
   scoresDernierePartie=arr[9];
+  joueursPresents=arr[10];
+
+
 
   console.log("updated")
 
@@ -190,7 +200,11 @@ function miseAJour(arr){
 function mousePressed(){ // appelé lors d'un clic de la souris
 
   if(servEstEnPartie){
-    socket.emit("ajout",socket.id,mouseX,mouseY);
+
+
+      socket.emit("ajout",socket.id,mouseX,mouseY);
+
+
 
   }
 
@@ -216,6 +230,10 @@ function recherche(){
 function majDessin(d){
   console.log("le dessinfutmaj");
   dessin = d;
+}
+
+function majDessinPoint(x,y){
+  dessin.push([x,y]);
 }
 
 function refreshqueue(){

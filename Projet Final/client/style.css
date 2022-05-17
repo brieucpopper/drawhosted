@@ -3,7 +3,10 @@
     display: flex;
     justify-content: space-evenly;
 }
-
+h1
+{
+    text-align: center;
+}
 /*-------------gauche----------------*/
 #gauche{
     width: 25%;
@@ -85,4 +88,12 @@
 #room2,#room3,#room4,#room5,#room6,#room8,#room9,#room10{
     background: rgba(13, 167, 62, 0.5);
     border-color: rgba(13, 167, 62, 0.5);
+}
+
+#sketch-holder
+{
+
+    margin-left: 13%;
+    margin-right: 5%;
+    margin-bottom: 20%
 }

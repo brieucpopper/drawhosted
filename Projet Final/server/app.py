@@ -42,7 +42,7 @@ themes = ['maison','arbre','ordi','japon','coree','amphitheatre','poulet']
 
 NBJOUEURS = 4 #nombre de joueurs par partie
 TEMPSPARMANCHE = 3
-TEMPSPARVOTE = 3
+TEMPSPARVOTE = 5
 timer=0 # donne le temps depuis le début de la phase actuelle
 tempsDebutManche = 0 # le temps auquel la manche a débuté
 estEnPartie=False #devient true lorsque en partie
@@ -91,6 +91,8 @@ idDejaVoté=[] # les id des joueurs ayant déja voté a ce tour
 # rejoint : annonce que le joueur est dans la queue
 # etat : envoie si on est en queue, ou en partie
 # maj : envoie mise a jour de toutes les variables au client (sauf les dessins)
+# effacer : envoie l'instruction d'effacer le dessin
+# nouveauPoint : envoie un nouveau point à ajouter sur le dessin
 
 
 def calculScores(): # a partir de totaux calcule la variable scores
@@ -116,7 +118,7 @@ def catchVote(id,pts):
 def genererToutesInfosUtiles(): # sert a envoyer a un client tout ce qu'il a besoin de savoir pour afficher les infos de maniere actualisée
 
 
-    return [estEnPartie,estEnVotes,noms,phaseActuelle,idDejaVoté,dessinActuelVote,scores,int(timer),nomsDernierePartie,scoresDernierePartie]
+    return [estEnPartie,estEnVotes,noms,phaseActuelle,idDejaVoté,dessinActuelVote,scores,int(timer),nomsDernierePartie,scoresDernierePartie,noms]
 
 @socket.on("connection") #sur une nouvelle connexion on envoie les derniere infos au client
 def catchconnect(id):
@@ -135,6 +137,7 @@ def catchiwantinfo(idd):
 
 
 def rafraichirDessinTous(): #rafraichit les dessin de  chacun
+    socket.emit("effacer");
     for id in joueursEnPartie:
         catchajout(id,-100,-100);
 
@@ -154,18 +157,28 @@ def catchajout(id,x,y):
             if (quelJoueur(id)==phasesDessin[phaseActuelle][0][0] and x<largeur/2) or (quelJoueur(id)==phasesDessin[phaseActuelle][0][1] and x>largeur/2): #verif du coté du point posé
 
                 dessin1.append([x,y]);
-                socket.emit("updateDessin",dessin1,to=joueursEnPartie[phasesDessin[phaseActuelle][0][0]-1])
 
-                socket.emit("updateDessin",dessin1,to=joueursEnPartie[phasesDessin[phaseActuelle][0][1]-1])
+                if(estEnVotes):
+                    socket.emit("updateDessin",dessin1,to=joueursEnPartie[phasesDessin[phaseActuelle][0][0]-1])
+
+                    socket.emit("updateDessin",dessin1,to=joueursEnPartie[phasesDessin[phaseActuelle][0][1]-1])
+                else:
+                    socket.emit("nouveauPoint",(x,y),to=joueursEnPartie[phasesDessin[phaseActuelle][0][0]-1])
+                    socket.emit("nouveauPoint",(x,y),to=joueursEnPartie[phasesDessin[phaseActuelle][0][1]-1])
 
 
 
         if quelJoueur(id) in phasesDessin[phaseActuelle][1]:
             if ((quelJoueur(id)==phasesDessin[phaseActuelle][1][0] and x<largeur/2) or (quelJoueur(id)==phasesDessin[phaseActuelle][1][1] and x>largeur/2)): #verif du coté du point
                 dessin2.append([x,y])
-                socket.emit("updateDessin",dessin2,to=joueursEnPartie[phasesDessin[phaseActuelle][1][0]-1])
 
-                socket.emit("updateDessin",dessin2,to=joueursEnPartie[phasesDessin[phaseActuelle][1][1]-1])
+                if(estEnVotes):
+                    socket.emit("updateDessin",dessin2,to=joueursEnPartie[phasesDessin[phaseActuelle][1][0]-1])
+
+                    socket.emit("updateDessin",dessin2,to=joueursEnPartie[phasesDessin[phaseActuelle][1][1]-1])
+                else:
+                    socket.emit("nouveauPoint",(x,y),to=joueursEnPartie[phasesDessin[phaseActuelle][1][0]-1])
+                    socket.emit("nouveauPoint",(x,y),to=joueursEnPartie[phasesDessin[phaseActuelle][1][1]-1])
 
 
 
@@ -322,6 +335,7 @@ def commencer(): #passage de la phase de queue à la phase de jeu
     totaux=[0,0,0,0,0,0]
     dessinActuelVote=0
     idDejaVoté=[]
+    envoyerThemeEtChangerTheme()
     for id in joueursEnPartie:
         catchrefresh(id)
 
