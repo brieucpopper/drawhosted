@@ -9,14 +9,28 @@ from flask_socketio import SocketIO, send
 import time
 import sys,random
 
-#setup de l'application flask et de socket
+
+from flask_apscheduler import APScheduler
+
+tini=time.time()
 app = Flask(__name__)
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+INTERVAL_TASK_ID = 'interval-task-id'
+def interval_task(): #le serveur se met regulierement a jour au cas ou personne n'est connecté a lui
+
+    catchrefresh(0)
+
+scheduler.add_job(id=INTERVAL_TASK_ID, func=interval_task, trigger='interval', seconds=8)
+
+#setup de l'application flask et de socket
 socket = SocketIO(app, cors_allowed_origins="*")
 app.debug = False
 PORT = int(sys.argv[1])+5000
 largeur = 900
 
-themes = ['maison','arbre','ordi','japon','coree','amphitheatre','poulet']
+themes = ['maison','arbre','ordi','japon','corée','amphitheatre','poulet','piano','guitare','musique','cookie','basketball','football','superman','taureau','montre','france','suisse','café','argent','netflix','coder','casque audio','lit','rubiks cube','tetris']
 #avec
 
 #@socket.on("nomEvent")
@@ -41,8 +55,8 @@ themes = ['maison','arbre','ordi','japon','coree','amphitheatre','poulet']
 
 
 NBJOUEURS = 4 #nombre de joueurs par partie
-TEMPSPARMANCHE = 3
-TEMPSPARVOTE = 5
+TEMPSPARMANCHE = 4
+TEMPSPARVOTE = 3
 timer=0 # donne le temps depuis le début de la phase actuelle
 tempsDebutManche = 0 # le temps auquel la manche a débuté
 estEnPartie=False #devient true lorsque en partie
@@ -295,8 +309,11 @@ def catchrefresh(id): # on verifie qu'on a pas changé de phase, puisque cette f
             totaux=[0,0,0,0,0,0] # un vote mauvais rapporte 0, bof 1, super 3
             dessinActuelVote=0
             idDejaVoté=[]
-
-    socket.emit("maj",genererToutesInfosUtiles(),to=id)
+            rafraichirDessinTous()
+            for i in joueursEnPartie:
+                socket.emit("maj",genererToutesInfosUtiles(),to=i)
+    if(id!=0):
+        socket.emit("maj",genererToutesInfosUtiles(),to=id)
 
 
 def quelJoueur(id):

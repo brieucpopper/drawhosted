@@ -1,23 +1,27 @@
 body{
-    background: linear-gradient(45deg, rgb(19, 19, 205)
-    , rgb(24, 98, 111), rgb(202, 7, 199), purple);
+    background: linear-gradient(45deg, blue
+    , red, rgb(235, 14, 228), purple);
     background-size: 400% 400%;
     animation: gradient 10s ease infinite;
     height: 700px;
+    display: flex;
+    flex-direction: column;
 }
 
-#nom{
+#name{
+    align-items: center;
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
     font-family: 'Fredoka One', cursive;
     font-size: 2em;
-    color: white;
+    color: black;
 }
 
-#boite,#droite,#bouton,#form{
-    font-family: 'Montserrat', sans-serif;
-}
-
-#connexion{
-    font-size: 20px;
+#sketch-holder{
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @keyframes gradient {

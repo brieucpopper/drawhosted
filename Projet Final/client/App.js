@@ -27,7 +27,6 @@ let RED=[255,0,0];
 let GREEN=[0,255,0];
 let ORANGE=[255,215,0];
 
-
 //lire le code python et les commentaires de app.py d'abord pour comprendre tous les évenements
 
 tempsDernierRefresh=0;
@@ -37,8 +36,8 @@ function setup() { // fonction éxecutée une fois au début
   let canvas=createCanvas(largeur,hauteur); //création d'une zone de 600 par 400 pixels
   canvas.parent('sketch-holder');
   background(245); // fond gris
-  let strconnectto='http://157.159.195.79:';
-  //let strconnectto='http://localhost:';
+  //let strconnectto='http://157.159.195.79:';
+  let strconnectto='http://localhost:';
   room=room+5000;
   console.log(room);
   console.log(room);
@@ -52,12 +51,25 @@ function setup() { // fonction éxecutée une fois au début
   //pStatutPartie.show();
 
   bouttonRech = createButton("recherche de partie"); //création d'un bouton avec du texte dessus
-  bouttonRech.position(500,500);
+  bouttonRech.position(680,hauteur+100);
   bouttonRech.mousePressed(recherche); // appel de fonction lorsque le bouton est cliqué
 
   //bouttonRef = createButton("refresh");
   //bouttonRef.position(100,500);
   //bouttonRef.mousePressed(refreshqueue);
+  bouttonVoteNul = createButton("Voter 'Nul'");
+  bouttonVoteBof = createButton("Voter 'Bof'");
+  bouttonVoteSuper = createButton("Voter 'Super'");
+  bouttonVoteNul.position(900,hauteur+100);
+  bouttonVoteNul.mousePressed(vote0);
+  bouttonVoteBof.position(820,hauteur+100);
+  bouttonVoteBof.mousePressed(vote1);
+  bouttonVoteSuper.position(980,hauteur+100);
+  bouttonVoteSuper.mousePressed(vote3);
+
+  bouttonVoteBof.hide();
+  bouttonVoteSuper.hide();
+  bouttonVoteNul.hide();
 
 
   socket.on('maj',miseAJour); // gestion de socket recu en appelant une fonction
@@ -75,8 +87,9 @@ function setup() { // fonction éxecutée une fois au début
 
 
   let nominitialrandom=Math.random().toString(36).replace(/[^a-z]+/g, '');
-  let inp = createInput(nominitialrandom); // entrée de texte pour l'utilisateur
-  inp.position(200, 400);
+  //let inp = createInput(nominitialrandom); // entrée de texte pour l'utilisateur
+  let inp = createInput('ENTREZ NOM');
+  inp.position(570, hauteur+100);
   inp.size(100);
   inp.input(majNom); // appelé lorsque le texte entré change
   nom = nominitialrandom;
@@ -85,20 +98,27 @@ function setup() { // fonction éxecutée une fois au début
 
 
 function draw() { //fonction éxécutée en boucle lors du programme
-  pStatutVotes.html('Le serveur est en votes : '+estEnVotes);
-  pStatutPartie.html('Le serveur est en partie : '+servEstEnPartie);
-  pStatutGensPresents.html('Sont présents sur le serveur les joueurs : :'+joueursPresents);
+  pStatutVotes.html();
+  pStatutPartie.html('Le serveur est en partie : '+servEstEnPartie+'<br>Le serveur est en votes : '+estEnVotes+'<br>Sont présents sur le serveur les joueurs : '+joueursPresents);
+  pStatutGensPresents.html();
   background(245);
+  bouttonRech.hide();
   if(!servEstEnPartie && !estEnVotes)
     {
-
-
+      bouttonRech.show();
+      bouttonVoteBof.hide();
+      bouttonVoteSuper.hide();
+      bouttonVoteNul.hide();
       //ni en votes ni en partie
 
       fill(0);
-      text("les scores de la derniere partie jouee sont " + scoresDernierePartie,100,100);
-      text("des joueurs respectivement " + nomsDernierePartie,100,115);
-      text("Si la partie ne se lance pas alors que vous etes assez, attendre la fin de la partie en cours, les gens présents sont : " + nomsDernierePartie,100,130);
+      text("les scores de la derniere partie jouee sont " + scoresDernierePartie,100,90);
+      text("des joueurs respectivement " + nomsDernierePartie,100,105);
+      text("Attendre la fin de la partie en cours pour chercher une partie, ou changez de salle",100,130);
+      text("RAPPEL : entrez votre nom dans la case dédiée en bas a droite, et cliquez recherche de partie",100,145);
+      text("Des informations utiles sont affichées sous la fenetre de jeu !",100,190);
+      text("Assurez vous de bien mettre votre page web suffisemment grande pour voir tous les boutons et le texte !",100,210);
+
     }
 
 
@@ -148,19 +168,15 @@ pTimer.html("pas de timer, la partie n'a pas commencee");
   }
 
   if(estEnVotes){
+    bouttonVoteBof.show()
+    bouttonVoteSuper.show()
+    bouttonVoteNul.show()
     pTimer.html("temps ecoule sur le vote : "+timer);
-    fill(RED);
+    fill(100,100,0);
     rect(0,450,200,500);
     fill(0);
-    text("nul",100,475);
-    fill(ORANGE);
-    rect(200,450,400,500);
-    fill(0);
-    text("bof",300,475);
-    fill(GREEN);
-    rect(400,450,600,500);
-    fill(0);
-    text("Cool !",500,475);
+    text("vote avec les boutons en bas a droite!",20,475);
+
 
     if (dessin != []){
       for (coord of dessin){
@@ -208,13 +224,6 @@ function mousePressed(){ // appelé lors d'un clic de la souris
 
   }
 
-  if(estEnVotes && mouseY>350 && mouseY<400){
-
-    if(mouseX<200){socket.emit("vote",socket.id,0)} //vote 0 points
-    if(mouseX>200 && mouseX<400){socket.emit("vote",socket.id,1)}
-    if(mouseX>400){socket.emit("vote",socket.id,3)} // pas ouf en sécurité on peut émettre via la console des votes avec bcp de points menfin
-
-  }
 }
 function mouseDragged(){
   if(servEstEnPartie){
@@ -239,6 +248,15 @@ function majDessinPoint(x,y){
 function refreshqueue(){
   socket.emit("refresh",socket.id);
   console.log("A manual refresh occured");
+}
+function vote0(){
+socket.emit("vote",socket.id,0);
+}
+function vote1(){
+socket.emit("vote",socket.id,1);
+}
+function vote3(){
+socket.emit("vote",socket.id,3);
 }
 
 function majNom(){
