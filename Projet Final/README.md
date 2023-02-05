@@ -7,7 +7,9 @@ This way each player participates in a drawing. At the end of the round, the tea
 Then the best drawings give players who elaborated them more points and the winner is chosen !
 
 <br><br>
-Technically working on this project was interesting as I learned about hosting a web server on a linux server, learned to code an interactive Javascript web application with sockets, and finally a simple python flask server to interact with sockets and implement this game.
+Technically working on this project was interesting as I learned about hosting a web server on a linux server, learned to code an interactive Javascript web application with sockets, and finally a simple python flask server to interact with sockets and implement this game, with multiple separate "rooms" if multiple players want to play in parallel.
+![tkt](https://user-images.githubusercontent.com/102361078/216851081-d4d83753-2b66-4ecc-a6ba-a0930ecbe00b.png)
+
 
 # INSTRUCTIONS
 
