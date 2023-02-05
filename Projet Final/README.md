@@ -1,7 +1,18 @@
+(this read me file is a work in progress)
+
+# Quick presentation
+
+This game is a two vs two drawing game. Each team receives a word (say "door") and has to draw a door, but there's a catch ! Both player draw on the same canvas, and each can only draw on half the canvas.<br>
+This way each player participates in a drawing. At the end of the round, the teams are mixed up and another word comes up. At the end of a given number of round, the game ends and players get to vote for each drawing (if they like it more or less)<br>
+Then the best drawings give players who elaborated them more points and the winner is chosen !
+
+<br><br>
+Technically working on this project was interesting as I learned about hosting a web server on a linux server, learned to code an interactive Javascript web application with sockets, and finally a simple python flask server to interact with sockets and implement this game.
+
 # INSTRUCTIONS
 
 
-Le plus simple pour jouer est de se rendre sur http://draw2io.h.minet.net
+Le plus simple pour jouer est de se rendre sur http://draw2io.h.minet.net (is currently in maintenance)
 
 
 
@@ -16,13 +27,13 @@ rapidement les étapes Sont
 5. fin
 
 
-#HOSTER SOI MEME UN SERVEUR
+# HOSTER SOI MEME UN SERVEUR
 
 Sur le site web on se connecte à un serveur qui fait tourner 10 serveurs python flask qui sont les 10 "salles"
 
 On peut soi-meme créer une salle en lancant avec la commande "python3 app.py i" un serveur qui sera sur le port 5000+i
 
-Puis s'y connecter en localhost par exemple (mais ce moyen est utilisé par notre équipe de développeurs pour débugger, pas vraiment d'interet par rapport à aller sur le site web)
+Puis s'y connecter en localhost (lancer index.html en local)
 
 
 <h1> ENGLISH VERSION </h1>
