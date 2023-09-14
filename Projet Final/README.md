@@ -1,5 +1,10 @@
 (this read me file is a work in progress)
 
+
+# Visual Demo : running 4 players on one screen
+
+<video src='https://github.com/brieucpopper/drawhosted/blob/master/Projet%20Final/video-1646009527.mp4' width=180/>
+
 # Quick presentation
 
 This game is a two vs two drawing game. Each team receives a word (say "door") and has to draw a door, but there's a catch ! Both player draw on the same canvas, and each can only draw on half the canvas.<br>
