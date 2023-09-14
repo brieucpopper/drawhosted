@@ -3,7 +3,7 @@
 
 # Visual Demo : running 4 players on one screen
 
-![Link to youtube video demo](https://www.youtube.com/watch?v=Jdf3ohmjG1M)
+[Link to youtube video demo](https://www.youtube.com/watch?v=Jdf3ohmjG1M)
 
 
 # Quick presentation
