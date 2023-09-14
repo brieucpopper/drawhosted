@@ -3,7 +3,8 @@
 
 # Visual Demo : running 4 players on one screen
 
-<video src='video-1646009527.mp4' width=180/>
+![Link to youtube video demo](https://www.youtube.com/watch?v=Jdf3ohmjG1M)
+
 
 # Quick presentation
 
