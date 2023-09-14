@@ -3,7 +3,7 @@
 
 # Visual Demo : running 4 players on one screen
 
-<video src='https://github.com/brieucpopper/drawhosted/blob/master/Projet%20Final/video-1646009527.mp4' width=180/>
+<video src='video-1646009527.mp4' width=180/>
 
 # Quick presentation
 
