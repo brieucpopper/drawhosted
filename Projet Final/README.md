@@ -1,20 +1,16 @@
-(this read me file is a work in progress)
+# 2v2 Drawing Competition Web Game
+*Started Apr 2022 — web programming project @ Telecom SudParis*
 
+[Video demo (4 players on one screen)](https://www.youtube.com/watch?v=Jdf3ohmjG1M)
 
-# Visual Demo : running 4 players on one screen
+Two teams of two get the same word (e.g. "house") and have to draw it — except both players share one canvas and each can only draw on half of it. Cooperation matters. After a few rounds with shuffled teams, players vote on drawings and a winner is picked.
 
-[Link to youtube video demo](https://www.youtube.com/watch?v=Jdf3ohmjG1M)
+The demo above is a proof of concept (no real words, short rounds). A full game would have longer rounds and varied prompts.
 
-In the demo the player are not really drawing any given "word", it's just a proof of concept. An actual game would have way more times for players to draw each round, and a variety of different things to draw (a cat, a house...)
+## How it works
 
+- Interactive canvas app in JavaScript (p5.js) with sockets
+- Python Flask server, hosted on a Linux server, with multiple parallel "rooms"
+- See `client/` and `server/`, plus `Livrables écrits/` (in French) for the full report
 
-# Quick presentation
-
-This game is a two vs two drawing game. Each team receives a word (say "house") and has to draw a house, but there's a catch ! Both player draw on the same canvas, and each can only draw on half the canvas.<br>
-This way each player participates in a drawing, but only by drawing on half the possible canvas. This means that your cooperation skills are crucial to get to a good final result! At the end of the round, the teams are mixed up and another word comes up. At the end of a given number of round, the game ends and players get to vote for each drawing (if they like it more or less)<br>
-Then the each player gets more or less points depending on whether the drawings he had a part in had good votes or not, and the final winner is chosen !
-
-<br><br>
-Technically working on this project was interesting as I learned about hosting a web server on a linux server, learned to code an interactive Javascript web application with sockets, and finally a simple python flask server to interact with sockets and implement this game, with multiple separate "rooms" if multiple players want to play in parallel.
-![tkt](https://user-images.githubusercontent.com/102361078/216851081-d4d83753-2b66-4ecc-a6ba-a0930ecbe00b.png)
-
+![game](https://user-images.githubusercontent.com/102361078/216851081-d4d83753-2b66-4ecc-a6ba-a0930ecbe00b.png)
